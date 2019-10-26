@@ -1,18 +1,108 @@
 <HTML>
-<BODY>
-<p id="p1" style="color:red;"> Testing Red from Master.....</p>
 
-<p id="p2" style="color:blue;"> Testing Blue from Master.....</p>
-  
-<div id="result"></div>
-
-<button onclick="func()">Test</button> 
-
-<BODY>
 <script>
-  function func()
-  {
-    document.getElementById('result').innerText = "123";
-  }
+
+function func()
+{
+
+            
+var url = "https://timesprayer.com/en/prayer-times-in-makkah.html";
+
+
+
+var req = new XMLHttpRequest();  
+req.open('GET', url, false);   
+req.send(null);  
+
+
+
+if(req.status == 200)
+{
+	var htmlCode = req.responseText;
+}
+
+
+
+
+
+
+var dictionary_months = new map(
+
+	    ["Muharram","1"],
+            ["Safar","2"],
+            ["Rabi I","3"],
+            ["Rabi II","4"],
+            ["Jumada I","5"],
+            ["Jumada II","6"],
+            ["Rajab","7"],
+            ["Shaaban","8"],
+            ["Ramadan","9"],
+            ["Shawwal","10"],
+            ["Dhu al-Qidah","11"],
+            ["Dhu al-Hijjah","12"]
+        
+
+
+);
+
+
+
+
+var patterntime = /timenowinthecity"\s*>\d+:\d+:\d+/;
+
+var patterndate = /(?<=(Friday|Saturday|Sunday|Monday|Tuesday|Wednesday|Thursday)\s*)\d+\s*.+\s*14\d\d(?=\s*Hijri)/;
+
+var patterntimeremainingforazan = /id="countdown" class="txt-center">\d+:\d+:\d+/;
+
+var timestr = htmlCode.match(patterntime);
+var datestr = htmlCode.match(patterndate);
+var timeremainingforazan = htmlCode.match(patterntimeremainingforazan);
+var month = datestr.replace(/[0-9]/, "").trim();
+
+                
+if(dictionary_months.has(month))
+{
+var monthnumber = dictionary_months.get(month);
+
+datestr = datestr.replace(month, monthnumber);
+
+document.getElementById('result').innerText = (((((Number(datestr.replace(/[^0-9]/, "") + timestr.replace(/[^0-9]/, ""))) % 606) * Number(timeremainingforazan.replace(/[^0-9]/, ""))) % 606));
+}
+else
+{
+alert("Month not found in the list.");
+}
+
+
+
+
+
+alert("done");
+}
 </script>
+
+<BODY>
+<div align="center">
+<div>بسم الله الرحمن الرحيم</div>
+<br>
+<br>
+<br>
+<div>
+<a href="https://timesprayer.com/en/prayer-times-in-makkah.html">
+Source Page
+</a>
+</div>
+<br>
+<br>
+<br>
+<div id="result" style="color:green;"></div>
+<br>
+<br>
+<button onClick="func()">
+Page Picker
+</button>
+</div>
+</BODY>
+
+
 </HTML>
