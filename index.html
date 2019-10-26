@@ -4,6 +4,8 @@
 
 <p id="p2" style="color:blue;"> Testing Blue from Master.....</p>
   
+<div id="result"></div>
+  
 <form>
     <button onclick="func()">Test</button> 
   </form>
@@ -11,7 +13,7 @@
 <script>
   function func()
   {
-    document.getElementById('p2').style.backgroundColor = "yellow";
+    document.getElementById('result').innerText = "123";
   }
 </script>
 </HTML>
