@@ -6538,7 +6538,7 @@ showverse(cur_index);
 
 function nextresult()
 {
-cur_resindex++;
+if(cur_resindex < (results.length-1)) cur_resindex++;
 cur_index = results[cur_resindex];
 showverse(results[cur_resindex]);
 }
@@ -6546,7 +6546,7 @@ showverse(results[cur_resindex]);
 
 function previousresult()
 {
-cur_resindex--;
+if(cur_resindex>0) cur_resindex--;
 cur_index = results[cur_resindex];
 showverse(results[cur_resindex]);
 }
@@ -6584,6 +6584,7 @@ var count = 0;
 while(index!=-1)
 {
 index = verses.findIndex((v, i) => i > index && v.replace(/\u0671/g,'\u0627').replace(/[^\u0620-\u064A\s]/g,'').includes(inp));
+if(index==-1) break; 
 results[count] = index;
 count++;
 }
