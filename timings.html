@@ -408,23 +408,25 @@ var i = times.findIndex(s => s.endsWith("\t" + d.getDate() + "-" + (d.getMonth()
 var str = times[i];
 var split = str.split("\t");
 document.getElementById('timings').rows[1].cells[0].innerHTML = split[6] + slope(i, 6);
-document.getElementById('timings').rows[1].cells[1].innerHTML = split[5]  + slope(i, 5);;
-document.getElementById('timings').rows[1].cells[2].innerHTML = split[4] + slope(i, 4);;
-document.getElementById('timings').rows[1].cells[3].innerHTML = split[3] + slope(i, 3);;
-document.getElementById('timings').rows[1].cells[4].innerHTML = split[1] + slope(i, 1);;
-document.getElementById('timings').rows[1].cells[5].innerHTML = split[0] + slope(i, 0);;
-  
+document.getElementById('timings').rows[1].cells[1].innerHTML = split[5]  + slope(i, 5);
+document.getElementById('timings').rows[1].cells[2].innerHTML = split[4] + slope(i, 4);
+document.getElementById('timings').rows[1].cells[3].innerHTML = split[3] + slope(i, 3);
+document.getElementById('timings').rows[1].cells[4].innerHTML = split[1] + slope(i, 1);
+document.getElementById('timings').rows[1].cells[5].innerHTML = split[0] + slope(i, 0);
+	
 function slope(index, splitindex)
 {
 var slope = 0;
   for(var i = Math.max(index+1,0); i<=Math.min(index+3, times.length-1); i++)
   {
-	slope = slope + Math.sign(Number(times[index].split('\t')[splitindex].replace(":",".")) - Number(times[i].split('\t')[splitindex].replace(":",".")));
+	slope = slope + Math.sign(Number(times[i].split('\t')[splitindex].replace(":",".")) - Number(times[index].split('\t')[splitindex].replace(":",".")) );
   }
 if(slope == 0) return "";
-else if (slope < 0) return " <span style=\"color: rgb(0, 100, 0);\">\u25BC</span>";
-else if (slope > 0) return " <span style=\"color: rgb(255, 0, 0);\">\u25B2</span>";
+else if (slope > 0) return " <span style=\"color: rgb(0, 100, 0);\">\u25B2</span>";
+else if (slope < 0) return " <span style=\"color: rgb(150, 50, 50);\">\u25BC</span>";
 }
+ 
+	
  
 </script>
 </html>
