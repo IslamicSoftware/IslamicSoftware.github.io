@@ -46,9 +46,15 @@ html, body {
 }
 
 
+@font-face {
+  font-family: trado;
+ src: url('trado.ttf') format('truetype');
+}
+
+
 #chapter
 {
-font-family: Traditional Arabic;
+font-family: Traditional Arabic, trado;
 font-size: 32pt;
 direction: rtl;
 background-color: rgb(50,50,50);
@@ -67,7 +73,7 @@ outline: none;
 direction: rtl;
 position: absolute;
 display: inline-block;
-font-family: Traditional Arabic;
+font-family: Traditional Arabic, trado;
 left: 50%;
 -webkit-transform: translateX(-50%);
 transform: translateX(-50%)
@@ -78,7 +84,7 @@ transform: translateX(-50%)
 .box::before
 {
 content: "\25BC";
-font-family: Traditional Arabic;
+font-family: Traditional Arabic, trado;
 position: absolute;
 top: 0;
 left: 0;
@@ -99,7 +105,7 @@ pointer-events: none;
 
 .box select option {
 padding: 30px;
-font-family: Traditional Arabic;
+font-family: Traditional Arabic, trado;
 background: rgba(0, 0, 0, 0.3);
 color: #fff;
 text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
@@ -12767,6 +12773,7 @@ var verses_plain = [
 var element_verse = document.getElementById('verse');
 var element_chapter = document.getElementById('chapter');
 
+
 for (var i = 0; i < chapters.length; i++) 
 {
 var element = document.createElement("option"); 
@@ -12791,6 +12798,14 @@ else if(event.keyCode==112) focuschapter(); //f1
 else if(event.keyCode==114) search(); //f3
 else if (event.ctrlKey && event.shiftKey && event.keyCode==90) copy(); //ctrl+shift+Z
 });
+
+
+var touchstartX = 0;
+var touchendX = 0;
+
+document.addEventListener('touchstart', e => {touchstartX = e.changedTouches[0].screenX;});
+document.addEventListener('touchend', e => {touchendX = e.changedTouches[0].screenX; handleSwipe();});
+
 
 function focuschapter()
 {
@@ -12935,6 +12950,13 @@ document.getElementById('container').style.animation="fadeanimation 1s";
 setTimeout(() => {document.getElementById('container').style.animation=null;}, 1200);
 }
 
+
+function handleSwipe() {
+  if (touchendX < (touchstartX - 50)) //swiped left
+	nextVerse();
+  else if (touchendX > (touchstartX + 50)) //swiped right
+	previousVerse();
+}
 
 
 </script>
