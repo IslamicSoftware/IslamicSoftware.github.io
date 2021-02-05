@@ -12956,9 +12956,9 @@ setTimeout(() => {container.style.animation=null;}, 1200);
 function handleSwipe() {
 
   if (touchendX < (touchstartX - 25)) //swiped left
-	alert('prev');
+	previousVerse();
   else if (touchendX > (touchstartX + 25)) //swiped right
-	alert('next');
+	nextVerse();
 }
 
 
