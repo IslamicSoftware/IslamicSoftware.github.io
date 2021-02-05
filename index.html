@@ -12773,6 +12773,13 @@ var verses_plain = [
 var element_verse = document.getElementById('verse');
 var element_chapter = document.getElementById('chapter');
 
+var container = document.getElementById('container');
+var touchstartX = 0;
+var touchendX = 0;
+
+container.addEventListener('touchstart', e => {touchstartX = e.changedTouches[0].screenX;});
+container.addEventListener('touchend', e => {touchendX = e.changedTouches[0].screenX; handleSwipe();});
+
 
 for (var i = 0; i < chapters.length; i++) 
 {
@@ -12800,11 +12807,6 @@ else if (event.ctrlKey && event.shiftKey && event.keyCode==90) copy(); //ctrl+sh
 });
 
 
-var touchstartX = 0;
-var touchendX = 0;
-
-document.addEventListener('touchstart', e => {touchstartX = e.changedTouches[0].screenX;});
-document.addEventListener('touchend', e => {touchendX = e.changedTouches[0].screenX; handleSwipe();});
 
 
 function focuschapter()
@@ -12946,15 +12948,16 @@ el.value = verses_plain[cur_index].split("|")[2];
 el.select();
 document.execCommand("copy");
 document.body.removeChild(el);
-document.getElementById('container').style.animation="fadeanimation 1s";
-setTimeout(() => {document.getElementById('container').style.animation=null;}, 1200);
+container.style.animation="fadeanimation 1s";
+setTimeout(() => {container.style.animation=null;}, 1200);
 }
 
 
 function handleSwipe() {
-  if (touchendX < (touchstartX - 50)) //swiped left
+
+  if (touchendX < (touchstartX - 25)) //swiped left
 	nextVerse();
-  else if (touchendX > (touchstartX + 50)) //swiped right
+  else if (touchendX > (touchstartX + 25)) //swiped right
 	previousVerse();
 }
 
