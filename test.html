@@ -1,0 +1,25 @@
+<html>
+<body>
+<div id="div1" style="background-color:rgb(50,200,0);height:100%;width:100%;">
+</div>
+<script>
+var div1 = document.getElementById('div1');
+
+touchstartX = 0;
+touchendX = 0;
+
+div1.addEventListener('touchstart', e => {touchstartX = e.changedTouches[0].screenX;});
+div1.addEventListener('touchend', e => {touchendX = e.changedTouches[0].screenX; handleSwipe();});
+
+
+function handleSwipe() {
+
+  if (touchendX < touchstartX - 50)) //swiped left
+	alert('left');
+  else if (touchendX > (touchstartX + 50)) //swiped right
+	alert(right);
+}
+
+</script>
+</body>
+</html>
