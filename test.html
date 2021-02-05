@@ -14,10 +14,10 @@ div1.addEventListener('touchend', e => {touchendX = e.changedTouches[0].screenX;
 
 function handleSwipe() {
 
-  if (touchendX < touchstartX - 50)) //swiped left
+  if (touchendX < (touchstartX - 50)) //swiped left
 	alert('left');
   else if (touchendX > (touchstartX + 50)) //swiped right
-	alert(right);
+	alert('right');
 }
 
 </script>
