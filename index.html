@@ -21,7 +21,7 @@ html, body {
   background: #3f560e;
   padding: 50px;
   height: 88%;
-  transform: TranslateY(10%);
+ 
 }
 
 #verse {
@@ -31,10 +31,9 @@ html, body {
   background: #80d5a6;
   border: 5px dashed mediumseagreen;
   box-shadow: 0 0 0 2.5px #226741, 0 0 0 12.5px #fff, inset 0 0 0 2.5px #226741, 0 5px 10px 15px rgba(0, 0, 0, 0.5), inset 0 0 0 6px #fff, inset 0 0 100vw 100vw beige;
-  color: mediumseagreen;
+  color: black;
   font-family: me_quran;
   font-size: 32pt;
-  text-shadow: 0 2px #fff;
   text-align: center;
   word-spacing: 300%;
 }
@@ -69,47 +68,31 @@ appearance: button;
 outline: none;
 }
 
+button
+{
+	width: 50px;
+	font-size: 20px;
+	margin: 20px;
+
+	
+	}
+	
+
 .box {
 direction: rtl;
-position: absolute;
-display: inline-block;
-font-family: Traditional Arabic, trado;
+align-items: center;
+position: fixed;
+font-family: Traditional Arabic, trado;  	
 left: 50%;
--webkit-transform: translateX(-50%);
-transform: translateX(-50%)
-  	
+transform: translateX(-50%);
 }
 
 
-.box::before
+
+.highlight
 {
-content: "\25BC";
-font-family: Traditional Arabic, trado;
-position: absolute;
-top: 0;
-left: 0;
-width: 20%;
-height: 100%;
-text-align: center;
-font-size: 28px;
-line-height: 45px;
-color: rgba(255, 255, 255, 0.5);
-background-color: rgba(255, 255, 255, 0.1);
-pointer-events: none;
-}
-
-.box:hover::before {
-  color: rgba(255, 255, 255, 0.6);
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.box select option {
-padding: 30px;
-font-family: Traditional Arabic, trado;
-background: rgba(0, 0, 0, 0.3);
-color: #fff;
-text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
-}
+	color: red;
+	}
 
 
 
@@ -12760,8 +12743,15 @@ var verses_plain = [
 </head>
 <body>
 <div class="box">
+	<button onclick="previousresult()"><=</button>
+	<button onclick="previousverse()"><<</button>
+<button onclick="jump()">#</button>
 <select id="chapter" onChange="onchapterchanged()">
 </select>
+<button onclick="search()"> ? </button>
+<button onclick="nextverse()">>></button>
+
+<button onclick="nextresult()">=></button>
 </div>
 <div id="container">
 <div id="verse">
@@ -12833,7 +12823,7 @@ function nextresult()
 {
 if(cur_resindex < (results.length-1)) cur_resindex++;
 cur_index = results[cur_resindex];
-showverse(results[cur_resindex]);
+showresult(results[cur_resindex]);
 }
 
 
@@ -12841,7 +12831,7 @@ function previousresult()
 {
 if(cur_resindex>0) cur_resindex--;
 cur_index = results[cur_resindex];
-showverse(results[cur_resindex]);
+showresult(results[cur_resindex]);
 }
 
 function jump()
@@ -12885,25 +12875,25 @@ cur_index = results[0];
 showverse(cur_index);
 }
 
-
+var term=null;
 
 function search()
 {
-var inp = prompt("كلمات البحث?");
-if(inp==null) return;
+term = prompt("كلمات البحث?");
+if(term==null) return;
 results = [];
 cur_resindex = 0;
 var index = 0;
 var count = 0;
 while(index!=-1)
 {
-index = verses_plain.findIndex((v, i) => i > index && v.replace(/\u0671/g,'\u0627').replace(/[^\u0620-\u064A\s]/g,'').includes(inp));
+index = verses_plain.findIndex((v, i) => i > index && v.replace(/\u0671/g,'\u0627').replace(/[^\u0620-\u064A\s]/g,'').includes(term));
 if(index==-1) break; 
 results[count] = index;
 count++;
 }
 cur_index = results[0];
-showverse(cur_index);
+showresult(cur_index);
 }
 
 
@@ -12941,6 +12931,26 @@ element_chapter.selectedIndex=chapter-1;
 
 }
 
+
+
+function showresult(index)
+{
+var split = verses[index].split("|");
+var text = split[2];
+var chapter = split[0];
+var verseno = split[1];
+var nspaces=verses_plain[index].substr(0, verses_plain[index].indexOf(term)).split(" ").length-1;
+var ns = term.trim().split(" ").length+1;
+var si = text.split(" ", nspaces).join(" ").length;
+var tr = text.substr(si).split(" ",  ns).join(" ");
+text="" + text.substr(0, si) + "<span class=\"highlight\">" + tr + "</span>"+ " " + text.substr(si+tr.length+1) ;
+element_verse.innerHTML = text + " \uFD3F" + toarabic(verseno) + "\uFD3E";
+element_chapter.selectedIndex=chapter-1;
+
+}
+
+
+
 function copy()
 {
 var el = document.createElement("input");
@@ -12957,9 +12967,9 @@ setTimeout(() => {container.style.animation=null;}, 1200);
 function handleSwipe() {
 
   if (touchendX < (touchstartX - 25)) //swiped left
-	previousVerse();
+	previousverse();
   else if (touchendX > (touchstartX + 25)) //swiped right
-	nextVerse();
+	nextverse();
 }
 
 
