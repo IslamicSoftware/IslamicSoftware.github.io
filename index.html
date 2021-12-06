@@ -12770,6 +12770,8 @@ var cur_index = 0;
 var results = [0];
 var cur_resindex = 0;
 
+var el = document.createElement("input");
+document.body.appendChild(el);
 
 container.addEventListener('touchstart', e => {touchstartX = e.changedTouches[0].screenX;});
 container.addEventListener('touchend', e => {touchendX = e.changedTouches[0].screenX; handleSwipe();});
@@ -12953,8 +12955,6 @@ element_chapter.selectedIndex=chapter-1;
 
 function copy()
 {
-var el = document.createElement("input");
-document.body.appendChild(el);
 el.value = verses_plain[cur_index].split("|")[2];
 el.select();
 document.execCommand("copy");
