@@ -12746,6 +12746,7 @@ var verses_plain = [
 	<button onclick="previousresult()"><=</button>
 	<button onclick="previousverse()"><<</button>
 <button onclick="jump()">#</button>
+<button id="button_copy">C</button>
 <select id="chapter" onChange="onchapterchanged()">
 </select>
 <button onclick="search()"> ? </button>
@@ -12770,12 +12771,11 @@ var cur_index = 0;
 var results = [0];
 var cur_resindex = 0;
 
-var el = document.createElement("input");
-document.body.appendChild(el);
 
 container.addEventListener('touchstart', e => {touchstartX = e.changedTouches[0].screenX;});
 container.addEventListener('touchend', e => {touchendX = e.changedTouches[0].screenX; handleSwipe();});
 
+document.querySelector("#button_copy").addEventListener("click", copy);
 
 for (var i = 0; i < chapters.length; i++) 
 {
@@ -12796,7 +12796,7 @@ else if(event.keyCode==39) previousverse(); //right
 else if(event.keyCode==27) jump(); //escape
 else if(event.keyCode==112) focuschapter(); //f1
 else if(event.keyCode==114) search(); //f3
-else if (event.ctrlKey && event.shiftKey && event.keyCode==90) copy(); //ctrl+shift+Z
+else if (event.ctrlKey && event.shiftKey && event.keyCode==90) document.querySelector("#button_copy").click(); //ctrl+shift+Z
 });
 
 
@@ -12955,6 +12955,8 @@ element_chapter.selectedIndex=chapter-1;
 
 function copy()
 {
+var el = document.createElement("input");
+document.body.appendChild(el);
 el.value = verses_plain[cur_index].split("|")[2];
 el.select();
 document.execCommand("copy");
